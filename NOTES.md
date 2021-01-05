@@ -115,3 +115,8 @@
 
   - or define your own `serialize()` in the model class in models.py
   - Plus, implement QuerySet and Manager for serialization
+
+## Error handling
+
+- By default, Django returns an HTML doc when an error is thrown.
+- For CSRF verification error, you need to allow API methods to be CSRF exempt. (NOT for production)

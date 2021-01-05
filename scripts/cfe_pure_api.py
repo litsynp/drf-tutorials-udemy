@@ -30,7 +30,7 @@ def get_list():
 def create_update():
     new_data = {
         'user': 1,
-        'content': 'Another new cool update'
+        'content': 'Some cooler content update'
     }
     r = requests.post(BASE_URL + ENDPOINT, data=new_data)
     print(r.headers)
@@ -52,6 +52,6 @@ def delete_update():
     return r.text
 
 
-get_list()
-print(create_update())
-print(delete_update())
+print(get_list())
+# print(create_update())
+# print(delete_update())

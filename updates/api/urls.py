@@ -8,5 +8,5 @@ urlpatterns = [
     path('', UpdateModelListAPIView.as_view()),
 
     # api/updates/1/ - Retrieve, Update, Delete
-    path('<int:id>', UpdateModelDetailAPIView.as_view()),
+    path('<int:id>/', UpdateModelDetailAPIView.as_view()),
 ]

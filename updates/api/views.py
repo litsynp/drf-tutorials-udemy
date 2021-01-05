@@ -23,8 +23,9 @@ class UpdateModelDetailAPIView(HttpResponseMixin, CSRFExemptMixin, View):
         return self.render_to_response(json_data)
 
     def post(self, request, *args, **kwargs):
-        json_data = {}
-        return self.render_to_response(json_data)
+        json_data = json.dumps({
+            'message': 'not allowed, please use the create /api/updates/ endpoint'})
+        return self.render_to_response(json_data, status=403)
 
     def put(self, request, *args, **kwargs):
         json_data = {}

@@ -6,8 +6,11 @@ BASE_URL = 'http://127.0.0.1:8000/'
 ENDPOINT = 'api/updates/'
 
 
-def get_list():
-    r = requests.get(BASE_URL + ENDPOINT)
+def get_list(id=None):
+    data = json.dumps({})
+    if id is not None:
+        data = json.dumps({'id': id})
+    r = requests.get(BASE_URL + ENDPOINT, data=data)
     print(r.status_code)
     status_code = r.status_code
     if status_code != 404:  # [Page] Not Found
@@ -16,14 +19,6 @@ def get_list():
         print("probably not a good sign?")
 
     data = r.json()
-    # print(type(json.dumps(data)))
-    for obj in data:
-        # print(obj['id'])
-        if obj['id'] == 1:
-            r2 = requests.get(BASE_URL + ENDPOINT + str(obj['id']))
-            # print(dir(r2))
-            print(r2.json())
-
     return data
 
 
@@ -72,8 +67,8 @@ def do_obj_delete():
     return r.text
 
 
-# print(get_list())
+print(get_list())
 # print(create_update())
 # print(delete_update())
 # print(do_obj_update())
-print(do_obj_delete())
+# print(do_obj_delete())

@@ -27,6 +27,8 @@ class Status(models.Model):
     updated = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    objects = StatusManager()
+
     def __str__(self):
         return str(self.content)[:50]
 

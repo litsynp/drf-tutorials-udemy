@@ -14,6 +14,7 @@ class StatusSerializer(serializers.ModelSerializer):
         # However, DRF serializers serializes the data into JSON as well as validate them for you!
         model = Status
         fields = [
+            'id',
             'user',
             'content',
             'image'

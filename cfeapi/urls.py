@@ -21,7 +21,7 @@ from updates.views import json_example_view, JsonCBV, JsonCBV2, SerializedListVi
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # api/updates --> list, api/updates/1/ --> detail
+    path('api/status/', include('status.api.urls')),
     path('api/updates/', include('updates.api.urls')),
 
     # path('json/cbv/', JsonCBV.as_view()),

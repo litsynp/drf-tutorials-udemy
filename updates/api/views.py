@@ -30,7 +30,7 @@ class UpdateModelDetailAPIView(HttpResponseMixin, CSRFExemptMixin, View):
         qs = UpdateModel.objects.filter(id=id)
         if qs.count() == 1:
             return qs.first()
-        return qs
+        return None
 
     def get(self, request, id, *args, **kwargs):
         obj = UpdateModel.objects.get(id=id)

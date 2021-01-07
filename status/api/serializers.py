@@ -20,7 +20,7 @@ class StatusSerializer(serializers.ModelSerializer):
             'image'
         ]
 
-    # Field validation example:
+    # Single field validation example:
     # def validate_<fieldname>(self, value):
     # For example,
     # def validate_content(self, value):

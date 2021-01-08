@@ -2,25 +2,88 @@ import json
 import os
 import requests
 
+AUTH_ENDPOINT = 'http://127.0.0.1:8000/api/auth/jwt/'
+REFRESH_ENDPOINT = 'http://127.0.0.1:8000/api/auth/jwt/refresh/'
 ENDPOINT = 'http://127.0.0.1:8000/api/status/'
 IMAGE_PATH = os.path.join(os.getcwd(), 'logo.png')
 
-
-get_endpoint = ENDPOINT + str(12)
-post_data = json.dumps({'content': 'Some random content'})
-
-
-r = requests.get(get_endpoint)
-print(r.text)
-
-r2 = requests.get(ENDPOINT)
-print(r2.status_code)
-
-post_headers = {
-    'content-type': 'application/json'
+data = {
+    'username': 'nocte',
+    'password': '1q2w3e4r'
 }
-post_response = requests.post(ENDPOINT, data=post_data, headers=post_headers)
-print(post_response.text)
+
+headers = {
+    'Content-Type': 'application/json'
+}
+
+r = requests.post(AUTH_ENDPOINT, data=json.dumps(data), headers=headers)
+token = r.json()['token']  # cookies, expiration
+
+# # Refresh
+# refresh_data = {
+#     'token': token
+# }
+
+# new_response = requests.post(
+#     REFRESH_ENDPOINT, data=json.dumps(refresh_data), headers=headers)
+# new_token = new_response.json()  # ['token']
+# print(new_token)
+
+# # Change image and text
+# headers = {
+#     # 'Content-Type': 'application/json',
+#     'Authorization': 'JWT ' + token,
+# }
+
+# with open(IMAGE_PATH, 'rb') as image:
+#     file_data = {
+#         'image': image
+#     }
+#     data = {
+#         'content': 'Updated description'
+#     }
+
+#     posted_response = requests.put(
+#         ENDPOINT + str(20) + '/', data=data, headers=headers, files=file_data)
+#     print(posted_response.text)
+
+# Only change text - DRF allows not setting the content type header
+headers = {
+    # 'Content-Type': 'application/json',
+    'Authorization': 'JWT ' + token,
+}
+
+data = {
+    'content': 'Updated description'
+}
+json_data = json.dumps(data)
+
+posted_response = requests.put(
+    ENDPOINT + str(20) + '/', data=json_data, headers=headers)
+print(posted_response.text)
+
+
+# =============================================================
+# ENDPOINT = 'http://127.0.0.1:8000/api/status/'
+
+# get_endpoint = ENDPOINT + str(12)
+# post_data = json.dumps({'content': 'Some random content'})
+
+# r = requests.get(get_endpoint)
+# print(r.text)
+
+# r2 = requests.get(ENDPOINT)
+# print(r2.status_code)
+
+# post_headers = {
+#     'content-type': 'application/json'
+# }
+# post_response = requests.post(ENDPOINT, data=post_data, headers=post_headers)
+# print(post_response.text)
+
+# =============================================================
+# ENDPOINT = 'http://127.0.0.1:8000/api/status/'
+# IMAGE_PATH = os.path.join(os.getcwd(), 'logo.png')
 
 # def do(method='get', data={}, is_json=True):
 #     headers = {}

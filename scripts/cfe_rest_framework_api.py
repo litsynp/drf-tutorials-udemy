@@ -2,8 +2,9 @@ import json
 import os
 import requests
 
-AUTH_ENDPOINT = 'http://127.0.0.1:8000/api/auth/jwt/'
-REFRESH_ENDPOINT = 'http://127.0.0.1:8000/api/auth/jwt/refresh/'
+
+AUTH_ENDPOINT = 'http://127.0.0.1:8000/api/auth/'
+REFRESH_ENDPOINT = AUTH_ENDPOINT + 'refresh/'
 ENDPOINT = 'http://127.0.0.1:8000/api/status/'
 IMAGE_PATH = os.path.join(os.getcwd(), 'logo.png')
 
@@ -17,7 +18,29 @@ headers = {
 }
 
 r = requests.post(AUTH_ENDPOINT, data=json.dumps(data), headers=headers)
-token = r.json()['token']  # cookies, expiration
+token = r.json()  # cookies, expiration
+print(token)
+
+
+# =============================================================
+
+# AUTH_ENDPOINT = 'http://127.0.0.1:8000/api/auth/jwt/'
+# REFRESH_ENDPOINT = AUTH_ENDPOINT + 'refresh/'
+# ENDPOINT = 'http://127.0.0.1:8000/api/status/'
+# IMAGE_PATH = os.path.join(os.getcwd(), 'logo.png')
+
+# data = {
+#     'username': 'nocte',
+#     'password': '1q2w3e4r'
+# }
+
+# headers = {
+#     'Content-Type': 'application/json'
+# }
+
+# r = requests.post(AUTH_ENDPOINT, data=json.dumps(data), headers=headers)
+# token = r.json()['token']  # cookies, expiration
+# print(token)
 
 # # Refresh
 # refresh_data = {
@@ -47,20 +70,20 @@ token = r.json()['token']  # cookies, expiration
 #         ENDPOINT + str(20) + '/', data=data, headers=headers, files=file_data)
 #     print(posted_response.text)
 
-# Only change text - DRF allows not setting the content type header
-headers = {
-    # 'Content-Type': 'application/json',
-    'Authorization': 'JWT ' + token,
-}
+# # Only change text - DRF allows not setting the content type header
+# headers = {
+#     # 'Content-Type': 'application/json',
+#     'Authorization': 'JWT ' + token,
+# }
 
-data = {
-    'content': 'Updated description'
-}
-json_data = json.dumps(data)
+# data = {
+#     'content': 'Updated description'
+# }
+# json_data = json.dumps(data)
 
-posted_response = requests.put(
-    ENDPOINT + str(20) + '/', data=json_data, headers=headers)
-print(posted_response.text)
+# posted_response = requests.put(
+#     ENDPOINT + str(20) + '/', data=json_data, headers=headers)
+# print(posted_response.text)
 
 
 # =============================================================

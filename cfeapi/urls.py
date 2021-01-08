@@ -18,21 +18,9 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-# we don't have accounts app, hence putting this in the main urls
-from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/auth/jwt/', obtain_jwt_token),
-    path('api/auth/jwt/refresh/', refresh_jwt_token),
-
+    path('api/auth/', include('accounts.api.urls')),
     path('api/status/', include('status.api.urls')),
     path('api/updates/', include('updates.api.urls')),
-
-
-    # path('json/cbv/', JsonCBV.as_view()),
-    # path('json/cbv2/', JsonCBV2.as_view()),
-    # path('json/example/', json_example_view),
-    # path('json/serialized/list/', SerializedListView.as_view()),
-    # path('json/serialized/detail/', SerializedDetailView.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

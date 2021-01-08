@@ -1,5 +1,6 @@
 import json
-from rest_framework import generics, mixins
+from rest_framework import generics, mixins, permissions
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -50,11 +51,14 @@ class StatusAPIDetailView(
     #     return None
 
 
+# Login required mixin / decorator
 class StatusAPIView(
         mixins.CreateModelMixin,
         generics.ListAPIView):
-    permission_classes = []
-    authentication_classes = []
+    # enforce the user to be authenticated to do things in this view
+    permission_classes = [permissions.IsAuthenticated]
+    # how they can be authenticated (OAuth, JWT, ...)
+    authentication_classes = [SessionAuthentication]
     serializer_class = StatusSerializer
 
     passed_id = None
@@ -70,5 +74,6 @@ class StatusAPIView(
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
-    # def perform_create(self, serializer):
-    #     serializer.save(user=self.request.user)
+    def perform_create(self, serializer):
+        # this fills user field which is read-only
+        serializer.save(user=self.request.user)

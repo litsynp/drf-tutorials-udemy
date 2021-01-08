@@ -29,4 +29,4 @@ urlpatterns = [
     # path('json/example/', json_example_view),
     # path('json/serialized/list/', SerializedListView.as_view()),
     # path('json/serialized/detail/', SerializedDetailView.as_view()),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

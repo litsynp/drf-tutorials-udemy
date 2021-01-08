@@ -26,8 +26,7 @@ class StatusAPIDetailView(
         mixins.UpdateModelMixin,
         mixins.DestroyModelMixin,
         generics.RetrieveAPIView):
-    permission_classes = []
-    authentication_classes = []
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = StatusSerializer
     queryset = Status.objects.all()
 
@@ -55,10 +54,7 @@ class StatusAPIDetailView(
 class StatusAPIView(
         mixins.CreateModelMixin,
         generics.ListAPIView):
-    # enforce the user to be authenticated to do things in this view
-    permission_classes = [permissions.IsAuthenticated]
-    # how they can be authenticated (OAuth, JWT, ...)
-    authentication_classes = [SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = StatusSerializer
 
     passed_id = None

@@ -13,6 +13,21 @@ expire_delta = api_settings.JWT_REFRESH_EXPIRATION_DELTA
 User = get_user_model()
 
 
+class UserPublicSerializer(serializers.ModelSerializer):
+    uri = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'username',
+            'uri',
+        ]
+
+    def get_uri(self, obj):
+        return '/api/users/{id}/'.format(id=obj.id)
+
+
 class UserRegisterSerializer(serializers.ModelSerializer):
     # One way of making password write-only
     password2 = serializers.CharField(
@@ -47,10 +62,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     def get_expires(self, obj):
         expires = timezone.now() + expire_delta - datetime.timedelta(seconds=200)
         return expires
-
-    def get_avg_views_in_current_request(self, obj):
-        request
-        return
 
     def validate_email(self, value):
         qs = User.objects.filter(email__iexact=value)

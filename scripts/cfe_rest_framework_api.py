@@ -21,7 +21,7 @@ token = r.json()['token']
 print(token)
 
 BASE_ENDPOINT = 'http://127.0.0.1:8000/api/status/'
-ENDPOINT = '12/'
+EXTENDED_ENDPOINT = BASE_ENDPOINT + '12/'
 
 headers2 = {
     # 'Content-Type': 'application/json',
@@ -32,14 +32,17 @@ data2 = {
     'content': 'this new content post'
 }
 
-with open(IMAGE_PATH, 'rb') as image:
-    file_data = {
-        'image': image
-    }
-    r = requests.post(BASE_ENDPOINT, data=data2,
-                      headers=headers2, files=file_data)
-    print(r.text)
+# with open(IMAGE_PATH, 'rb') as image:
+#     file_data = {
+#         'image': image
+#     }
+#     r = requests.post(BASE_ENDPOINT, data=data2,
+#                       headers=headers2, files=file_data)
+#     print(r.text)
 
+r = requests.get(EXTENDED_ENDPOINT, data=data2,
+                 headers=headers2)
+print(r.text)
 
 # =============================================================
 

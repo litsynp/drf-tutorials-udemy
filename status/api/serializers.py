@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from accounts.api.serializers import UserPublicSerializer
 from status.models import Status
 
 
@@ -9,6 +10,9 @@ class CustomSerializer(serializers.Serializer):
 
 
 class StatusSerializer(serializers.ModelSerializer):
+    uri = serializers.SerializerMethodField(read_only=True)
+    user = UserPublicSerializer(read_only=True)
+
     class Meta:
         # Do notice that these are almost the same as from `forms.py`.
         # However, DRF serializers serializes the data into JSON as well as validate them for you!
@@ -17,9 +21,13 @@ class StatusSerializer(serializers.ModelSerializer):
             'id',
             'user',
             'content',
-            'image'
+            'image',
+            'uri',
         ]
         read_only_fields = ['user']  # GET # readonly_fields
+
+    def get_uri(self, obj):
+        return '/api/status/{id}/'.format(id=obj.id)
 
     # Single field validation example:
     # def validate_<fieldname>(self, value):

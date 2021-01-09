@@ -11,6 +11,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
+
+    # Pagination
+    'DEFAULT_PAGINATION_CLASS': 'cfeapi.rest_conf.pagination.CFEAPIPagination',
 }
 
 # Django REST Framework JWT

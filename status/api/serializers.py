@@ -4,9 +4,22 @@ from accounts.api.serializers import UserPublicSerializer
 from status.models import Status
 
 
-class CustomSerializer(serializers.Serializer):
-    content = serializers.CharField()
-    email = serializers.EmailField()
+class StatusInlineUserSerializer(serializers.ModelSerializer):
+    uri = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        # Do notice that these are almost the same as from `forms.py`.
+        # However, DRF serializers serializes the data into JSON as well as validate them for you!
+        model = Status
+        fields = [
+            'id',
+            'content',
+            'image',
+            'uri',
+        ]
+
+    def get_uri(self, obj):
+        return '/api/status/{id}/'.format(id=obj.id)
 
 
 class StatusSerializer(serializers.ModelSerializer):

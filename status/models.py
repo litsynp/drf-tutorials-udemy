@@ -36,3 +36,7 @@ class Status(models.Model):
         # Set (verbose) names on admin site
         verbose_name = 'Status post'
         verbose_name_plural = 'Status posts'
+
+    @property
+    def owner(self):
+        return self.user

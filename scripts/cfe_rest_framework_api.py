@@ -3,25 +3,65 @@ import os
 import requests
 
 
-AUTH_ENDPOINT = 'http://127.0.0.1:8000/api/auth/register/'
+AUTH_ENDPOINT = 'http://127.0.0.1:8000/api/auth/'
 REFRESH_ENDPOINT = AUTH_ENDPOINT + 'refresh/'
-ENDPOINT = 'http://127.0.0.1:8000/api/status/'
 IMAGE_PATH = os.path.join(os.getcwd(), 'logo.png')
-
-data = {
-    'username': 'nocte3',
-    'email': 'testuser@gmail.com',
-    'password': '1q2w3e4r',
-    'password2': '1q2w3e4r'
-}
 
 headers = {
     'Content-Type': 'application/json',
 }
 
+data = {
+    'username': 'nocte',
+    'password': '1q2w3e4r',
+}
+
 r = requests.post(AUTH_ENDPOINT, data=json.dumps(data), headers=headers)
-token = r.json()  # cookies, expiration
+token = r.json()['token']
 print(token)
+
+BASE_ENDPOINT = 'http://127.0.0.1:8000/api/status/'
+ENDPOINT = '12/'
+
+headers2 = {
+    # 'Content-Type': 'application/json',
+    'Authorization': 'JWT ' + token,
+}
+
+data2 = {
+    'content': 'this new content post'
+}
+
+with open(IMAGE_PATH, 'rb') as image:
+    file_data = {
+        'image': image
+    }
+    r = requests.post(BASE_ENDPOINT, data=data2,
+                      headers=headers2, files=file_data)
+    print(r.text)
+
+
+# =============================================================
+
+# AUTH_ENDPOINT = 'http://127.0.0.1:8000/api/auth/register/'
+# REFRESH_ENDPOINT = AUTH_ENDPOINT + 'refresh/'
+# ENDPOINT = 'http://127.0.0.1:8000/api/status/'
+# IMAGE_PATH = os.path.join(os.getcwd(), 'logo.png')
+
+# headers = {
+#     'Content-Type': 'application/json',
+# }
+
+# data = {
+#     'username': 'nocte15',
+#     'email': 'testuser15@gmail.com',
+#     'password': '1q2w3e4r',
+#     'password2': '1q2w3e4r'
+# }
+
+# r = requests.post(AUTH_ENDPOINT, data=json.dumps(data), headers=headers)
+# token = r.json()  # cookies, expiration
+# print(token)
 
 # =============================================================
 

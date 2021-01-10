@@ -1,29 +1,13 @@
 from rest_framework import serializers
+from rest_framework.reverse import reverse as api_reverse
 
 from accounts.api.serializers import UserPublicSerializer
 from status.models import Status
 
 
-class StatusInlineUserSerializer(serializers.ModelSerializer):
-    uri = serializers.SerializerMethodField(read_only=True)
-
-    class Meta:
-        # Do notice that these are almost the same as from `forms.py`.
-        # However, DRF serializers serializes the data into JSON as well as validate them for you!
-        model = Status
-        fields = [
-            'id',
-            'content',
-            'image',
-            'uri',
-        ]
-
-    def get_uri(self, obj):
-        return '/api/status/{id}/'.format(id=obj.id)
-
-
 class StatusSerializer(serializers.ModelSerializer):
     uri = serializers.SerializerMethodField(read_only=True)
+    # user = serializers.SerializerMethodField(read_only=True)
     user = UserPublicSerializer(read_only=True)
 
     class Meta:
@@ -40,7 +24,13 @@ class StatusSerializer(serializers.ModelSerializer):
         read_only_fields = ['user']  # GET # readonly_fields
 
     def get_uri(self, obj):
-        return '/api/status/{id}/'.format(id=obj.id)
+        request = self.context.get('request')
+        return api_reverse('status-detail', kwargs={'pk': obj.id}, request=request)
+
+    def get_user(self, obj):
+        request = self.context.get('request')
+        user = obj.user
+        return UserPublicSerializer(user, read_only=True, context={'request': request}).data
 
     # Single field validation example:
     # def validate_<fieldname>(self, value):
@@ -61,3 +51,40 @@ class StatusSerializer(serializers.ModelSerializer):
         if content is None and image is None:
             raise serializers.ValidationError('Content or image is required.')
         return data
+
+
+class StatusInlineUserSerializer(StatusSerializer):
+    uri = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        # Do notice that these are almost the same as from `forms.py`.
+        # However, DRF serializers serializes the data into JSON as well as validate them for you!
+        model = Status
+        fields = [
+            'id',
+            'content',
+            'image',
+            'uri',
+        ]
+
+    def get_uri(self, obj):
+        request = self.context.get('request')
+        return api_reverse('status-detail', kwargs={'pk': obj.id}, request=request)
+
+# class StatusInlineUserSerializer(StatusSerializer):
+#     uri = serializers.SerializerMethodField(read_only=True)
+
+#     class Meta:
+#         # Do notice that these are almost the same as from `forms.py`.
+#         # However, DRF serializers serializes the data into JSON as well as validate them for you!
+#         model = Status
+#         fields = [
+#             'id',
+#             'content',
+#             'image',
+#             'uri',
+#         ]
+
+#     def get_uri(self, obj):
+#         request = self.context.get('request')
+#         return api_reverse('status-detail', kwargs={'pk': obj.id}, request=request)

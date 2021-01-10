@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
+from rest_framework.reverse import reverse as api_reverse
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
@@ -25,7 +26,8 @@ class UserPublicSerializer(serializers.ModelSerializer):
         ]
 
     def get_uri(self, obj):
-        return '/api/users/{id}/'.format(id=obj.id)
+        request = self.context.get('request')
+        return api_reverse('status-detail', kwargs={'pk': obj.id}, request=request)
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):

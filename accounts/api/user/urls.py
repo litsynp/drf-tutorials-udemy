@@ -4,6 +4,6 @@ from .views import UserDetailAPIView, UserStatusAPIView
 
 
 urlpatterns = [
-    path('<username>/', UserDetailAPIView.as_view(), name='detail'),
-    path('<username>/status/', UserStatusAPIView.as_view(), name='status-list'),
+    path('<username>/', UserDetailAPIView.as_view(), name='user-detail'),
+    path('<username>/status/', UserStatusAPIView.as_view(), name='user-status-list'),
 ]

@@ -14,6 +14,14 @@ REST_FRAMEWORK = {
 
     # Pagination
     'DEFAULT_PAGINATION_CLASS': 'cfeapi.rest_conf.pagination.CFEAPIPagination',
+
+    # Filtering
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ),
+    'SEARCH_PARAM': 'search',
+    'ORDERING_PARAM': 'ordering',
 }
 
 # Django REST Framework JWT

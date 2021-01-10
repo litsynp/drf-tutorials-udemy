@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.relations import HyperlinkedRelatedField, PrimaryKeyRelatedField
 from rest_framework.reverse import reverse as api_reverse
 
 from accounts.api.serializers import UserPublicSerializer
@@ -9,6 +10,13 @@ class StatusSerializer(serializers.ModelSerializer):
     uri = serializers.SerializerMethodField(read_only=True)
     # user = serializers.SerializerMethodField(read_only=True)
     user = UserPublicSerializer(read_only=True)
+    # # user_id = PrimaryKeyRelatedField(source='user', read_only=True)
+    # # user_uri = HyperlinkedRelatedField(
+    # #     source='user',  # user foreign key
+    # #     lookup_field='username',
+    # #     view_name='user-detail',
+    # #     read_only=True)
+    # user = serializers.SlugRelatedField(read_only=True, slug_field='username')
 
     class Meta:
         # Do notice that these are almost the same as from `forms.py`.
